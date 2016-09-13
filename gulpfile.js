@@ -39,7 +39,9 @@ gulp.task('sass', function() {
  */
 gulp.task('elm', ['elm-init', 'copy-assets'], function(){
   return gulp.src('src/*.elm')
-    .pipe(elm.make({filetype: 'js'}))
+    .pipe(elm.make({filetype: 'js'})).on('error', function (err) {
+        return handleError(err);
+      })
     .pipe(gulp.dest('app/'))
     .pipe(browserSync.reload({stream:true}));
 });
@@ -68,3 +70,8 @@ gulp.task('default', ['elm', 'watch'], function() {
   // Start browser process
   electron.start();
 });
+
+function handleError(err) {
+  console.log(err);
+  // this.emit('end');
+}
